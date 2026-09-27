@@ -333,9 +333,11 @@ function open_player(name, rank) {
         `;
     }).join("");
     $("#player-stats").html(`
-        <th>TOTAL</th>
-        <th>${got_all}/${total_all}</th>
-        <th>${percent(got_all, total_all)}%</th>
+        <tr>
+            <th>TOTAL</th>
+            <th>${got_all}/${total_all}</th>
+            <th>${percent(got_all, total_all)}%</th>
+        </tr>
     ` + diff_rows);
 
     let completed = player_towers[username];
