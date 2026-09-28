@@ -2,6 +2,7 @@ let tower_lookup = {};
 let player_lookup = {};
 let game_lookup = {};
 let pack_info = {};
+let tower_creators_expanded = false;
 
 let quality_order = {
     "SS": 0, "S+": 1, "S": 2, "S-": 3, "A+": 4, "A": 5, "A-": 6, "B+": 7, "B": 8, "B-": 9, "C+": 10, "C": 11, "C-": 12, "D+": 13, "D": 14, "D-": 15, "F+": 16, "F": 17, "F-": 18, "X": 19, "Z": 20
@@ -245,8 +246,23 @@ function quality_cls(q) {
     return "quality-" + q.replace(/[+\-]$/, "").toLowerCase() + suffix;
 }
 
+function render_tower_creators(creators) {
+    let creator_links = names => names.map(c => `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>`).join(", ");
+    if (creators.length <= 3) return `Created by: ${creator_links(creators)}`;
+    if (tower_creators_expanded) {
+        return `Created by: ${creator_links(creators)} <a href="javascript:void(0)" onclick="toggle_tower_creators()">(Show Less)</a>`;
+    }
+    return `Created by: ${creator_links(creators.slice(0, 2))}, <a href="javascript:void(0)" onclick="toggle_tower_creators()">and ${creators.length - 2} other creators</a>`;
+}
+
+function toggle_tower_creators() {
+    tower_creators_expanded = !tower_creators_expanded;
+    $("#tower-creator").html(render_tower_creators(tower_lookup[current_tower_id].creators));
+}
+
 function open_tower(id) {
     current_tower_id = id;
+    tower_creators_expanded = false;
     open_page("Towers");
     let tower = tower_lookup[id];
     let diff = diff_name(tower.difficulty);
@@ -256,7 +272,7 @@ function open_tower(id) {
     $("#tower-diff").html(`<span class="${diff}">${sub_range(tower.difficulty)} ${diff}</span> (${format_num(tower.difficulty / 100)})`);
     $("#tower-location").html(places_html(tower, 0, 1));
     $("#tower-other-locations").html(tower.places.length > 1 ? `<i>Other Locations: ${places_html(tower, 1, tower.places.length)}</i>` : "").toggle(tower.places.length > 1);
-    $("#tower-creator").html(tower.creators.length ? `Created by: ${tower.creators.map(c => `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>`).join(", ")}` : "").parent().toggle(tower.creators.length > 0);
+    $("#tower-creator").html(tower.creators.length ? render_tower_creators(tower.creators) : "").parent().toggle(tower.creators.length > 0);
     $("#tower-rank").html(tower.rank);
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));

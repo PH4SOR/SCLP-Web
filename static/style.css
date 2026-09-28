@@ -41,6 +41,11 @@ span {
     text-align: right;
 }
 
+#tower-creator {
+    display: inline;
+    text-align: left;
+}
+
 p {
     margin: 0;
 }
