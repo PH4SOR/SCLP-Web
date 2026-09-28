@@ -247,7 +247,7 @@ function quality_cls(q) {
 }
 
 function render_tower_creators(creators) {
-    let creator_links = names => names.map(c => `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>`).join(", ");
+    let creator_links = names => names.map(c => find_player(c) ? `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>` : c).join(", ");
     if (creators.length <= 4) return `Created by: ${creator_links(creators)}`;
     if (tower_creators_expanded) {
         return `Created by: ${creator_links(creators)} <a class="creator-show-less" href="javascript:void(0)" onclick="toggle_tower_creators()">(Show Less)</a>`;
