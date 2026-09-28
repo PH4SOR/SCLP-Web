@@ -249,6 +249,22 @@ p {
     overflow-y: auto;
 }
 
+#tower-details > br {
+    display: none;
+}
+
+#tower-details > .big {
+    margin: 0 !important;
+}
+
+#tower-details > #tower-name {
+    margin: 8px 0 35px !important;
+}
+
+#tower-details > .big:not(#tower-name) {
+    margin: 10px 0 6px !important;
+}
+
 .filters {
     display: grid;
     grid-template-columns: 2fr 1fr;
