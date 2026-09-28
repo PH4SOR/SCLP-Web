@@ -256,6 +256,7 @@ function open_tower(id) {
     $("#tower-diff").html(`<span class="${diff}">${sub_range(tower.difficulty)} ${diff}</span> (${format_num(tower.difficulty / 100)})`);
     $("#tower-location").html(places_html(tower, 0, 1));
     $("#tower-other-locations").html(tower.places.length > 1 ? `<i>Other Locations: ${places_html(tower, 1, tower.places.length)}</i>` : "");
+    $("#tower-creator").html(tower.creators.length ? `Created by: ${tower.creators.map(c => `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>`).join(", ")}` : "");
     $("#tower-rank").html(tower.rank);
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));
