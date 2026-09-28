@@ -44,6 +44,7 @@ span {
 #tower-creator {
     display: inline;
     text-align: left;
+    line-height: calc(1.2em + 3px);
 }
 
 #tower-creator .creator-show-less {
@@ -251,6 +252,10 @@ p {
 
 #tower-details > br {
     display: none;
+}
+
+#tower-details > p {
+    line-height: 1.2;
 }
 
 #tower-details > .big {
