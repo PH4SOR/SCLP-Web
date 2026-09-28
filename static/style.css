@@ -46,6 +46,10 @@ span {
     text-align: left;
 }
 
+#tower-creator .creator-show-less {
+    text-decoration: none;
+}
+
 p {
     margin: 0;
 }

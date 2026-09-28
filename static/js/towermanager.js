@@ -250,7 +250,7 @@ function render_tower_creators(creators) {
     let creator_links = names => names.map(c => `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>`).join(", ");
     if (creators.length <= 3) return `Created by: ${creator_links(creators)}`;
     if (tower_creators_expanded) {
-        return `Created by: ${creator_links(creators)} <a href="javascript:void(0)" onclick="toggle_tower_creators()">(Show Less)</a>`;
+        return `Created by: ${creator_links(creators)} <a class="creator-show-less" href="javascript:void(0)" onclick="toggle_tower_creators()">(Show Less)</a>`;
     }
     return `Created by: ${creator_links(creators.slice(0, 2))}, <a href="javascript:void(0)" onclick="toggle_tower_creators()">and ${creators.length - 2} other creators</a>`;
 }
