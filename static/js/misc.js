@@ -225,10 +225,6 @@ function update_timer() {
 $("#search").on("input", () => search_filters[current_page]?.());
 
 let scotw;
-fetch("/get_scotw").then(res => res.json()).then(data => {
-    scotw = data;
-    render_scotw();
-});
 
 document.getElementById('discord').addEventListener('click', function() {
     window.open('https://discord.gg/t9crQndHyn', '_blank');

@@ -37,21 +37,39 @@ function diff_span(d) {
     return `<span class="${diff_name(d)}">${format_num(d / 100)}</span>`;
 }
 
+function open_tower_row_link(event, id) {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return true;
+    open_tower(id);
+    return false;
+}
+
+function open_player_row_link(event, name, rank) {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return true;
+    open_player(name, rank);
+    return false;
+}
+
 function tower_row(t, last, button = "tower-link", attrs = "") {
+    let tower_name = `<a class="table-row-link ${button}" href="/?t=${t.id}" onclick="return open_tower_row_link(event, ${t.id})">${t.name}</a>`;
     return `
         <tr ${attrs}>
             <td class="${diff_name(t.difficulty)}">#${t.rank}</td>
-            <td><button class="${button}" onclick="open_tower(${t.id})">${t.name}</button></td>
+            <td>${tower_name}</td>
             ${last}
         </tr>
     `;
 }
 
 function player_row(name, rank, last, attrs = "") {
+    let player = find_player(name);
+    let encoded_name = encodeURIComponent(player?.username || name).replace(/'/g, "%27");
+    let player_name = player
+        ? `<a class="table-row-link player-link" href="/?u=${encoded_name}" onclick="return open_player_row_link(event, decodeURIComponent('${encoded_name}'), ${rank})">${role(name, true)}</a>`
+        : role(name, true);
     return `
         <tr data-name="${name.toLowerCase()}" ${attrs}>
             <td>#${rank}</td>
-            <td><button class="player-link" onclick='open_player("${name}", ${rank})'>${role(name, true)}</button></td>
+            <td>${player_name}</td>
             ${last}
         </tr>
     `;
@@ -101,7 +119,7 @@ function filter_towers() {
 
     filter_rows("towers-table", row => {
         let {id, name, abbr, diff, places} = row.dataset;
-        row.querySelector("button").className = done.has(+id) ? "tower-link-done" : "tower-link";
+        row.querySelector(".tower-link, .tower-link-done").className = `table-row-link ${done.has(+id) ? "tower-link-done" : "tower-link"}`;
         return (name.includes(search) || abbr.includes(search)) && allowed.includes(+diff) && (!place || places.split(",").includes(place));
     });
 }
@@ -394,3 +412,8 @@ restore(() => {
     if (!route(new URLSearchParams(window.location.search))) open_page("Home");
 });
 window.history.replaceState({page: current_page}, '', current_url());
+
+fetch("/get_scotw").then(res => res.json()).then(data => {
+    scotw = data;
+    render_scotw();
+});
