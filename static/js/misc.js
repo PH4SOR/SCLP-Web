@@ -111,7 +111,7 @@ document.querySelectorAll("input").forEach(input => {
 
 let pages = ["Home", "Towers", "Leaderboard", "Packs", "SCoTW"];
 for (let page of pages) {
-    $("#nav-links").append(`<button class="nav-link" onclick="open_page('${page}')">${page}</button>`);
+    $("#nav-links").append(`<button class="nav-link" onclick="open_page('${page}')" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?page=${page.toLowerCase()}')">${page}</button>`);
 }
 
 let current_page = "Home";
