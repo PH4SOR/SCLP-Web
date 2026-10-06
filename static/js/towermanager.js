@@ -49,6 +49,12 @@ function open_player_row_link(event, name, rank) {
     return false;
 }
 
+function open_link_in_new_tab_on_middle_click(event, url) {
+    if (event.button !== 1) return;
+    event.preventDefault();
+    window.open(url, "_blank", "noopener");
+}
+
 function tower_row(t, last, button = "tower-link", attrs = "") {
     let tower_name = `<a class="table-row-link ${button}" href="/?t=${t.id}" onclick="return open_tower_row_link(event, ${t.id})">${t.name}</a>`;
     return `
@@ -195,7 +201,7 @@ function render_packs() {
         return `
             <tr data-name="${pack.name.toLowerCase()}">
                 <td class="${diff_name(pack_info[pack.id].avg_diff)}">#${pack_info[pack.id].rank}</td>
-                <td><button class="${done ? 'pack-link-done' : 'pack-link'}" onclick="open_pack('${pack.id}')">${pack.name}</button></td>
+                <td><button class="${done ? 'pack-link-done' : 'pack-link'}" onclick="open_pack('${pack.id}')" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?pk=${encodeURIComponent(pack.id)}')">${pack.name}</button></td>
                 ${td_right(last(pack))}
             </tr>
         `;
@@ -265,12 +271,17 @@ function quality_cls(q) {
 }
 
 function render_tower_creators(creators) {
-    let creator_links = names => names.map(c => find_player(c) ? `<a href="javascript:void(0)" onclick="open_player('${c}')">${c}</a>` : c).join(", ");
+    let creator_links = names => names.map(c => {
+        let player = find_player(c);
+        if (!player) return c;
+        let username = encodeURIComponent(player.username).replace(/'/g, "%27");
+        return `<button type="button" class="inline-link" onclick="open_player(decodeURIComponent('${username}'))" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?u=${username}')">${c}</button>`;
+    }).join(", ");
     if (creators.length <= 4) return `Created by: ${creator_links(creators)}`;
     if (tower_creators_expanded) {
-        return `Created by: ${creator_links(creators)} <a class="creator-show-less" href="javascript:void(0)" onclick="toggle_tower_creators()">(Show Less)</a>`;
+        return `Created by: ${creator_links(creators)} <button type="button" class="inline-link creator-show-less" onclick="toggle_tower_creators()">(Show Less)</button>`;
     }
-    return `Created by: ${creator_links(creators.slice(0, 3))}, <a href="javascript:void(0)" onclick="toggle_tower_creators()">and ${creators.length - 4} other creators</a>`;
+    return `Created by: ${creator_links(creators.slice(0, 3))}, <button type="button" class="inline-link" onclick="toggle_tower_creators()">and ${creators.length - 4} other creators</button>`;
 }
 
 function toggle_tower_creators() {
@@ -295,7 +306,7 @@ function open_tower(id) {
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));
     $("#tower-quality").html(tower.quality ? `Quality: <span class="${quality_cls(tower.quality)}">${tower.quality}</span>` : "").toggle(Boolean(tower.quality));
-    $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => `<a href="javascript:void(0)" onclick="open_pack('${pack.id}')">${pack.name}</a>`).join(", ")}` : "").toggle(tower_packs.length > 0);
+    $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => `<button type="button" class="inline-link" onclick="open_pack('${pack.id}')" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?pk=${encodeURIComponent(pack.id)}')">${pack.name}</button>`).join(", ")}` : "").toggle(tower_packs.length > 0);
     $("#tower-id").html(id);
     $("#tower-victors").html(victor_rows(victors_by_tower[id], "No SCLP victors yet"));
 }

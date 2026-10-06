@@ -206,9 +206,23 @@ p {
 
 .table-row-link {
     display: inline-block;
-    padding: 0 6px;
+    padding: 1px 0px;
     text-decoration: none;
-    vertical-align: -4px;
+    vertical-align: -6px;
+    cursor: pointer;
+}
+
+.inline-link {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-decoration: underline;
     cursor: pointer;
 }
 
