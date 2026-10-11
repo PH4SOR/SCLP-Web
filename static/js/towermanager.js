@@ -270,18 +270,31 @@ function quality_cls(q) {
     return "quality-" + q.replace(/[+\-]$/, "").toLowerCase() + suffix;
 }
 
+function entity_link(kind, key, label) {
+    return `<a href="/?${kind}=${encodeURIComponent(key)}" data-open="${kind}" data-key="${encodeURIComponent(key)}">${label}</a>`;
+}
+
+$(document).on("click", "a[data-open]", function (e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.which > 1) return;
+    e.preventDefault();
+    let key = decodeURIComponent(this.getAttribute("data-key"));
+    let kind = this.getAttribute("data-open");
+    if (kind == "u") open_player(key);
+    else if (kind == "pk") open_pack(key);
+    else open_tower(+key);
+});
+
 function render_tower_creators(creators) {
     let creator_links = names => names.map(c => {
         let player = find_player(c);
-        if (!player) return c;
-        let username = encodeURIComponent(player.username).replace(/'/g, "%27");
-        return `<button type="button" class="inline-link" onclick="open_player(decodeURIComponent('${username}'))" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?u=${username}')">${c}</button>`;
+        return player ? entity_link("u", player.username, c) : c;
     }).join(", ");
-    if (creators.length <= 4) return `Created by: ${creator_links(creators)}`;
+    let toggle = label => `<button type="button" class="link-button" onclick="toggle_tower_creators()">${label}</button>`;
+    if (creators.length <= 5) return `Created by: ${creator_links(creators)}`;
     if (tower_creators_expanded) {
-        return `Created by: ${creator_links(creators)} <button type="button" class="inline-link creator-show-less" onclick="toggle_tower_creators()">(Show Less)</button>`;
+        return `Created by: ${creator_links(creators)} ${toggle("(Show Less)")}`;
     }
-    return `Created by: ${creator_links(creators.slice(0, 3))}, <button type="button" class="inline-link" onclick="toggle_tower_creators()">and ${creators.length - 4} other creators</button>`;
+    return `Created by: ${creator_links(creators.slice(0, 4))}, ${toggle(`and ${creators.length - 4} other creators`)}`;
 }
 
 function toggle_tower_creators() {
@@ -306,7 +319,7 @@ function open_tower(id) {
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));
     $("#tower-quality").html(tower.quality ? `Quality: <span class="${quality_cls(tower.quality)}">${tower.quality}</span>` : "").toggle(Boolean(tower.quality));
-    $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => `<button type="button" class="inline-link" onclick="open_pack('${pack.id}')" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?pk=${encodeURIComponent(pack.id)}')">${pack.name}</button>`).join(", ")}` : "").toggle(tower_packs.length > 0);
+    $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => entity_link("pk", pack.id, pack.name)).join(", ")}` : "").toggle(tower_packs.length > 0);
     $("#tower-id").html(id);
     $("#tower-victors").html(victor_rows(victors_by_tower[id], "No SCLP victors yet"));
 }

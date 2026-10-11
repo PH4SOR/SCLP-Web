@@ -13,7 +13,13 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCLP Official</title>
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta property="og:site_name" content="SCLP Official">
+    <meta property="og:title" content="{{ meta.title }}">
+    <meta property="og:description" content="{{ meta.description }}">
+    <meta property="og:image" content="{{ url_for('static', filename='images/sclp.png', _external=True) }}">
+    <meta name="twitter:card" content="summary">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat">
