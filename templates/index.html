@@ -139,8 +139,13 @@
                         <p class="big">Packs</p>
                         <div id="player-packs"></div><br>
 
-                        <p class="big">Completions</p>
+                        <div class="player-tower-views hidden" id="player-tower-views" role="group" aria-label="Player tower lists">
+                            <button type="button" class="player-tower-tab active" id="player-completions-tab" aria-pressed="true" onclick="show_player_tower_view('completions')">Completions</button>
+                            <button type="button" class="player-tower-tab" id="player-creations-tab" aria-pressed="false" onclick="show_player_tower_view('creations')">Creations</button>
+                        </div>
+                        <p class="big" id="player-tower-view-title">Completions</p>
                         <table id="player-towers"></table>
+                        <table id="player-creations" class="hidden"></table>
                     </div>
                 </div>
             </div>

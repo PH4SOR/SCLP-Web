@@ -365,6 +365,15 @@ function flag_html(x) {
     return `<span class="fi fi-${x.toLowerCase()}" title="${x.toUpperCase()}"></span>`;
 }
 
+function show_player_tower_view(view) {
+    let showing_creations = view == "creations";
+    $("#player-tower-view-title").text(showing_creations ? "Creations" : "Completions");
+    $("#player-towers").toggleClass("hidden", showing_creations);
+    $("#player-creations").toggleClass("hidden", !showing_creations);
+    $("#player-completions-tab").toggleClass("active", !showing_creations).attr("aria-pressed", String(!showing_creations));
+    $("#player-creations-tab").toggleClass("active", showing_creations).attr("aria-pressed", String(showing_creations));
+}
+
 function open_player(name, rank) {
     let player = find_player(name);
     let username = player.username;
@@ -405,6 +414,11 @@ function open_player(name, rank) {
 
     let completed = player_towers[username];
     $("#player-towers").html(completed.map(id => tower_row(tower_lookup[id], `<td>${diff_span(tower_lookup[id].difficulty)}</td>`)).join(""));
+    let created = towers.filter(t => t.creators.some(creator => creator.toLowerCase() == username.toLowerCase()))
+        .sort((a, b) => b.difficulty - a.difficulty || a.rank - b.rank);
+    $("#player-creations").html(created.map(t => tower_row(t, `<td>${diff_span(t.difficulty)}</td>`)).join(""));
+    $("#player-tower-views").toggleClass("hidden", created.length == 0);
+    show_player_tower_view("completions");
 
     let completed_packs = packs.filter(pack => pack_victors[pack.id].includes(username));
     $("#player-packs").html(completed_packs.length ? completed_packs.map(pack => `<p>${pack.name} (${format_num(pack.xp)} Bonus XP)</p>`).join("") : '<p class="muted">No packs completed</p>');
