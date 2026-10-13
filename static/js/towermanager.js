@@ -323,6 +323,7 @@ function open_tower(id) {
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));
     $("#tower-quality").html(tower.quality ? `Quality: <span class="${quality_cls(tower.quality)}">${tower.quality}</span>` : "").toggle(Boolean(tower.quality));
+    $("#tower-length").html(tower["time/length"] ? `Length: ${tower["time/length"]} minutes` : "").toggle(Boolean(tower["time/length"]));
     $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => entity_link("pk", pack.id, pack.name)).join(", ")}` : "").toggle(tower_packs.length > 0);
     $("#tower-id").html(id);
     $("#tower-victors").html(victor_rows(victors_by_tower[id], "No SCLP victors yet"));
