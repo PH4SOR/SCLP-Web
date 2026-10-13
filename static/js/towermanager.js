@@ -37,6 +37,11 @@ function diff_span(d) {
     return `<span class="${diff_name(d)}">${format_num(d / 100)}</span>`;
 }
 
+function format_length(length) {
+    let value = String(length ?? "").trim();
+    return value && !value.endsWith("+") ? `${value}+` : value;
+}
+
 function open_tower_row_link(event, id) {
     if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return true;
     open_tower(id);
@@ -96,14 +101,20 @@ function render_towers() {
         difficulty: t => t.difficulty,
         victors: t => victors(t.id),
         quality: t => -quality_order[t.quality],
+        length: t => parseInt(t["time/length"], 10),
     }[sort];
     let last = {
         difficulty: t => diff_span(t.difficulty),
         victors: t => victors(t.id),
         quality: t => `<span class="${quality_cls(t.quality)}">${t.quality}</span>`,
+        length: t => format_length(t["time/length"]),
     }[sort];
 
-    let sorted_towers = towers.filter(t => sort != "quality" || t.quality != null);
+    let sorted_towers = towers.filter(t => {
+        if (sort == "quality") return t.quality != null;
+        if (sort == "length") return String(t["time/length"] || "").trim() != "";
+        return true;
+    });
     sorted_towers.sort((a, b) => sign * (value(b) - value(a)) || a.rank - b.rank);
 
     $("#towers-table").html(sorted_towers.map(t => tower_row(t, td_right(last(t)), "tower-link", `
@@ -323,7 +334,7 @@ function open_tower(id) {
     $("#tower-xp").html(tower.xp);
     $("#tower-victor-count").html(victors(id));
     $("#tower-quality").html(tower.quality ? `Quality: <span class="${quality_cls(tower.quality)}">${tower.quality}</span>` : "").toggle(Boolean(tower.quality));
-    $("#tower-length").html(tower["time/length"] ? `Length: ${tower["time/length"]} minutes` : "").toggle(Boolean(tower["time/length"]));
+    $("#tower-length").html(tower["time/length"] ? `Length: ${format_length(tower["time/length"])} minutes` : "").toggle(Boolean(tower["time/length"]));
     $("#tower-packs").html(tower_packs.length ? `Packs: ${tower_packs.map(pack => entity_link("pk", pack.id, pack.name)).join(", ")}` : "").toggle(tower_packs.length > 0);
     $("#tower-id").html(id);
     $("#tower-victors").html(victor_rows(victors_by_tower[id], "No SCLP victors yet"));
