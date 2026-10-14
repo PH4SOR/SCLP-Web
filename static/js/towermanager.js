@@ -98,7 +98,7 @@ function render_towers() {
     let sort = $("#tower-sort").val() || "difficulty";
     let sign = $("#tower-sort-dir").attr("data-dir") == "asc" ? -1 : 1;
     let value = {
-        difficulty: t => t.difficulty,
+        difficulty: t => -t.rank,
         victors: t => victors(t.id),
         quality: t => -quality_order[t.quality],
         length: t => parseInt(t["time/length"], 10),
@@ -115,7 +115,7 @@ function render_towers() {
         if (sort == "length") return String(t["time/length"] || "").trim() != "";
         return true;
     });
-    sorted_towers.sort((a, b) => sign * (value(b) - value(a)) || a.rank - b.rank);
+    sorted_towers.sort((a, b) => sign * (value(b) - value(a)) || sign * (b.rank - a.rank));
 
     $("#towers-table").html(sorted_towers.map(t => tower_row(t, td_right(last(t)), "tower-link", `
         data-id="${t.id}"
