@@ -209,7 +209,7 @@ function render_packs() {
     }[sort];
 
     let sorted_packs = packs.filter(p => sort != "quality" || pack_info[p.id].avg_quality != null);
-    sorted_packs.sort((a, b) => sign * (value(b) - value(a)));
+    sorted_packs.sort((a, b) => sign * (value(b) - value(a)) || (sort == "xp" ? -sign * (pack_info[b.id].rank - pack_info[a.id].rank) : 0));
 
     $("#packs-table").html(sorted_packs.map(pack => {
         let done = pack.towers.length > 0 && done_count(pack, player) == pack.towers.length;
