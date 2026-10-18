@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 def get_data(r):
     url = f"https://sheets.googleapis.com/v4/spreadsheets/1PCndMCuQkslsWITs19Q2YaLFa16XnpUZzts4npzCjtE/values/{r}?key={os.getenv('GOOGLE_SHEETS_API_KEY')}" # will set up a db for a lot of this stuff later
-    values = requests.get(url).json().get("values", [])
+    values = requests.get(url, timeout=20).json().get("values", [])
     if len(values) < 2:
         return []
 
@@ -166,7 +166,16 @@ def build():
         "player_towers": player_towers,
     }
 
-data = build()
+for attempt in range(5):
+    try:
+        data = build()
+        break
+    except Exception as e:
+        print(f"startup build error (attempt {attempt + 1}): {e}")
+        if attempt == 4:
+            raise
+        time.sleep(10)
+
 def refresh():
     global data
     while True:
