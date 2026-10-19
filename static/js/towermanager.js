@@ -380,7 +380,6 @@ function flag_html(x) {
 function show_player_tower_view(view) {
     let showing_packs = view == "packs";
     let showing_creations = view == "creations";
-    $("#player-tower-view-title").text(showing_packs ? "Packs" : showing_creations ? "Creations" : "Completions");
     $("#player-towers").toggleClass("hidden", showing_packs || showing_creations);
     $("#player-packs").toggleClass("hidden", !showing_packs);
     $("#player-creations").toggleClass("hidden", !showing_creations);
@@ -444,6 +443,7 @@ function open_player(name, rank) {
     $("#player-completions-tab").text(`Completions (${completed.length})`);
     $("#player-packs-tab").text(`Packs (${completed_packs.length})`);
     $("#player-creations-tab").text(`Creations (${created.length})`);
+    $("#player-tower-view-title").toggleClass("hidden", created.length > 0 || completed_packs.length > 0);
     $("#player-tower-views").toggleClass("hidden", created.length == 0 && completed_packs.length == 0);
     $("#player-completions-tab").toggleClass("hidden", created.length == 0 && completed_packs.length == 0);
     $("#player-packs-tab").toggleClass("hidden", completed_packs.length == 0);
