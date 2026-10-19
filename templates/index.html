@@ -137,15 +137,14 @@
                         <p class="big">Stats</p>
                         <table id="player-stats"></table><br>
 
-                        <p class="big">Packs</p>
-                        <div id="player-packs"></div><br>
-
-                        <div class="player-tower-views hidden" id="player-tower-views" role="group" aria-label="Player tower lists">
+                        <div class="player-tower-views hidden" id="player-tower-views" role="group" aria-label="Player lists">
                             <button type="button" class="player-tower-tab active" id="player-completions-tab" aria-pressed="true" onclick="show_player_tower_view('completions')">Completions</button>
+                            <button type="button" class="player-tower-tab" id="player-packs-tab" aria-pressed="false" onclick="show_player_tower_view('packs')">Packs</button>
                             <button type="button" class="player-tower-tab" id="player-creations-tab" aria-pressed="false" onclick="show_player_tower_view('creations')">Creations</button>
                         </div>
                         <p class="big" id="player-tower-view-title">Completions</p>
                         <table id="player-towers"></table>
+                        <table id="player-packs" class="hidden"></table>
                         <table id="player-creations" class="hidden"></table>
                     </div>
                 </div>

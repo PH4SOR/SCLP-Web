@@ -503,7 +503,7 @@ p {
     padding-left: 5px;
 }
 
-#player-stats, #player-towers, #player-creations, #tower-victors {
+#player-stats, #player-towers, #player-packs, #player-creations, #tower-victors {
     text-align: left;
 }
 
@@ -538,33 +538,29 @@ p {
     text-align: right;
 }
 
-#player-towers, #player-creations, #pack-towers {
+#player-towers, #player-packs, #player-creations, #pack-towers {
     width: 100%;
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0 5px;
 }
 
-#player-towers td:first-child, #player-creations td:first-child, #pack-towers td:first-child {
+#player-towers td:first-child, #player-packs td:first-child, #player-creations td:first-child, #pack-towers td:first-child {
     width: 80px;
     text-align: center;
     white-space: nowrap;
 }
 
-#player-towers td:nth-child(2), #player-creations td:nth-child(2), #pack-towers td:nth-child(2) {
+#player-towers td:nth-child(2), #player-packs td:nth-child(2), #player-creations td:nth-child(2), #pack-towers td:nth-child(2) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-#player-towers td:last-child, #player-creations td:last-child, #pack-towers td:last-child {
+#player-towers td:last-child, #player-packs td:last-child, #player-creations td:last-child, #pack-towers td:last-child {
     width: 100px;
     text-align: right;
     white-space: nowrap;
-}
-
-#player-packs p {
-    margin: 5px 0;
 }
 
 .fi {

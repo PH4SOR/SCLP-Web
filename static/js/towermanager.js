@@ -378,11 +378,14 @@ function flag_html(x) {
 }
 
 function show_player_tower_view(view) {
+    let showing_packs = view == "packs";
     let showing_creations = view == "creations";
-    $("#player-tower-view-title").text(showing_creations ? "Creations" : "Completions");
-    $("#player-towers").toggleClass("hidden", showing_creations);
+    $("#player-tower-view-title").text(showing_packs ? "Packs" : showing_creations ? "Creations" : "Completions");
+    $("#player-towers").toggleClass("hidden", showing_packs || showing_creations);
+    $("#player-packs").toggleClass("hidden", !showing_packs);
     $("#player-creations").toggleClass("hidden", !showing_creations);
-    $("#player-completions-tab").toggleClass("active", !showing_creations).attr("aria-pressed", String(!showing_creations));
+    $("#player-completions-tab").toggleClass("active", !showing_packs && !showing_creations).attr("aria-pressed", String(!showing_packs && !showing_creations));
+    $("#player-packs-tab").toggleClass("active", showing_packs).attr("aria-pressed", String(showing_packs));
     $("#player-creations-tab").toggleClass("active", showing_creations).attr("aria-pressed", String(showing_creations));
 }
 
@@ -429,11 +432,23 @@ function open_player(name, rank) {
     let created = towers.filter(t => t.creators.some(creator => creator.toLowerCase() == username.toLowerCase()))
         .sort((a, b) => b.difficulty - a.difficulty || a.rank - b.rank);
     $("#player-creations").html(created.map(t => tower_row(t, `<td>${diff_span(t.difficulty)}</td>`)).join(""));
-    $("#player-tower-views").toggleClass("hidden", created.length == 0);
+    let completed_packs = packs.filter(pack => pack_victors[pack.id].includes(username))
+        .sort((a, b) => pack_info[a.id].rank - pack_info[b.id].rank);
+    $("#player-packs").html(completed_packs.length ? completed_packs.map(pack => `
+        <tr>
+            <td class="${diff_name(pack_info[pack.id].avg_diff)}">#${pack_info[pack.id].rank}</td>
+            <td><button class="pack-link" onclick="open_pack('${pack.id}')" onmousedown="open_link_in_new_tab_on_middle_click(event, '/?pk=${encodeURIComponent(pack.id)}')">${pack.name}</button></td>
+            ${td_right(`${format_num(pack.xp)} XP`)}
+        </tr>
+    `).join("") : empty_row("No packs completed"));
+    $("#player-completions-tab").text(`Completions (${completed.length})`);
+    $("#player-packs-tab").text(`Packs (${completed_packs.length})`);
+    $("#player-creations-tab").text(`Creations (${created.length})`);
+    $("#player-tower-views").toggleClass("hidden", created.length == 0 && completed_packs.length == 0);
+    $("#player-completions-tab").toggleClass("hidden", created.length == 0 && completed_packs.length == 0);
+    $("#player-packs-tab").toggleClass("hidden", completed_packs.length == 0);
+    $("#player-creations-tab").toggleClass("hidden", created.length == 0); //this logic kinda ehhhhh
     show_player_tower_view("completions");
-
-    let completed_packs = packs.filter(pack => pack_victors[pack.id].includes(username));
-    $("#player-packs").html(completed_packs.length ? completed_packs.map(pack => `<p>${pack.name} (${format_num(pack.xp)} Bonus XP)</p>`).join("") : '<p class="muted">No packs completed</p>');
 
     add_badges(player, job);
 }
