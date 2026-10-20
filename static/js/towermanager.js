@@ -73,7 +73,8 @@ function tower_row(t, last, button = "tower-link", attrs = "") {
 
 function player_row(name, rank, last, attrs = "") {
     let player = find_player(name);
-    let encoded_name = encodeURIComponent(player?.username || name).replace(/'/g, "%27");
+    let player_key = player ? (player_identifier(player) || player.username) : name;
+    let encoded_name = encodeURIComponent(player_key).replace(/'/g, "%27");
     let player_name = player
         ? `<a class="table-row-link player-link" href="/?u=${encoded_name}" onclick="return open_player_row_link(event, decodeURIComponent('${encoded_name}'), ${rank})">${role(name, true)}</a>`
         : role(name, true);
@@ -389,9 +390,11 @@ function show_player_tower_view(view) {
 }
 
 function open_player(name, rank) {
-    let player = find_player(name);
+    let player = find_player(name) || players.find(p => String(player_identifier(p)) === String(name));
+    if (!player) return;
     let username = player.username;
     current_player_name = username;
+    current_player_id = player_identifier(player);
     open_page("Leaderboard");
     let job = role(username);
     let counts = diff_counts[username];

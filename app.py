@@ -203,6 +203,10 @@ for entry in staff:
 
 scotw_points = get_data("scotwpoints!A:B")
 
+def player_identity(player):
+    return str(player.get("userid") or player.get("username", "")).strip()
+
+
 def level_of(xp):
     level = 0
     need = 175
@@ -212,16 +216,23 @@ def level_of(xp):
         need = 150 + 25 * (level + 1) ** 2
     return level
 
+
 def page_meta():
     meta = {"title": "SCLP Official", "description": "Soul Crushing Leaderboard Project"}
-    name = request.args.get("u", "").lower()
+    user_value = request.args.get("u", "")
     tower_id = request.args.get("t", "")
     pack_id = request.args.get("pk", "")
 
-    player = next((p for p in data["players"] if p["username"].lower() == name), None) if name else None
+    player = None
+    if user_value:
+        target = user_value.strip().lower()
+        player = next((
+            p for p in data["players"]
+            if str(p.get("username", "")).lower() == target
+            or str(player_identity(p)).lower() == target
+        ), None)
     tower = next((t for t in data["towers"] if str(t["id"]) == tower_id), None) if tower_id else None
     pack = next((p for p in data["packs"] if p["id"] == pack_id), None) if pack_id else None
-
     if player:
         meta["title"] = f'{player["username"]} - SCLP'
         meta["description"] = f'Rank #{player["rank"]} | Level {level_of(player["total_xp"])} | {player["total_xp"]:,} XP | {len(player["completions"])} SCs beaten'
