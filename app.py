@@ -110,12 +110,9 @@ def build():
         p["nationality"] = flags.get(p["username"])
         p["xp"] = sum(tower_by_id[id]["xp"] for id in p["completions"] if id in tower_by_id)
 
-    players.sort(key=lambda p: p["xp"], reverse=True)
     towers.sort(key=lambda t: (-t["difficulty"], -t["id"]))
     for rank, tower in enumerate(towers, 1):
         tower["rank"] = rank
-    for rank, p in enumerate(players, 1):
-        p["rank"] = rank
 
     packs = parse_packs(get_data("packs!A:M"), tower_by_id)
 
@@ -129,6 +126,19 @@ def build():
     player_hardest = {}
     diff_counts = {}
     player_towers = {}
+
+    for player in players:
+        done = set(player["completions"])
+        bonus = sum(
+            pack["xp"]
+            for pack in packs
+            if pack["towers"] and done.issuperset(pack["towers"])
+        )
+        player["total_xp"] = player["xp"] + bonus
+
+    players.sort(key=lambda p: p["total_xp"], reverse=True)
+    for rank, player in enumerate(players, 1):
+        player["rank"] = rank
 
     for player in players:
         name = player["username"]
@@ -145,13 +155,9 @@ def build():
         player_towers[name] = [t["id"] for t in sorted(owned, key=lambda t: t["rank"])]
 
         done = set(player["completions"])
-        bonus = 0
         for pack in packs:
             if pack["towers"] and done.issuperset(pack["towers"]):
-                bonus += pack["xp"]
                 pack_victors[pack["id"]].append(name)
-
-        player["total_xp"] = player["xp"] + bonus
 
     return {
         "players": players,

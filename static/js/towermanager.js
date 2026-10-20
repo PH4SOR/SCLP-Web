@@ -90,7 +90,7 @@ function player_row(name, rank, last, attrs = "") {
 function victor_rows(names, empty) {
     let rows = names.filter(name => player_lookup[name]).map(name => {
         let p = player_lookup[name];
-        return player_row(name, p.rank, td_right(`Level ${level_text(p.xp, true)}`));
+        return player_row(name, p.rank, td_right(`Level ${level_text(p.total_xp, true)}`));
     }).join("");
     return rows || empty_row(empty);
 }
