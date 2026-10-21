@@ -70,7 +70,6 @@ span {
     border: 1px solid #303540;
     border-radius: 6px;
     background: #252830;
-    color: #FFFFFF;
     font: inherit;
 }
 
@@ -254,10 +253,6 @@ p {
     cursor: pointer;
 }
 
-.tower-link, .player-link, .pack-link {
-    color: #FFFFFF;
-}
-
 .tower-link-done, .pack-link-done {
     color: #FFFFFF20;
     text-decoration: line-through;
@@ -401,8 +396,6 @@ p {
 }
 
 .sort-dir {
-    display: inline-block;
-    vertical-align: middle;
     flex: 0 0 auto;
     border: none;
     border-radius: 8px;
@@ -506,7 +499,6 @@ p {
     border: 1px solid #40454f;
     border-radius: 12px;
     display: inline-block;
-    color: #FFFFFF;
     text-decoration: none;
 }
 
@@ -530,7 +522,6 @@ p {
 
 #tower-victors, #pack-victors {
     width: 100%;
-    max-width: 100%;
     table-layout: auto;
     border-collapse: collapse;
     word-break: break-word;
@@ -629,7 +620,6 @@ p {
 
 #scotw-title .tower-link {
     font-size: inherit;
-    color: inherit;
     width: auto;
     font-weight: bold;
     text-align: center;
@@ -706,7 +696,6 @@ p {
     font-weight: bold;
     letter-spacing: 1px;
     text-align: left;
-    display: inline-block;
 }
 
 ::-webkit-scrollbar {
@@ -725,11 +714,9 @@ p {
 
 .quality-ss { color: #FF72DF; }
 .quality-s-plus { color: #FF6BA3; }
-.quality-s { color: #FF7F7F; }
-.quality-s-minus { color: #FF7F7F; }
+.quality-s, .quality-s-minus { color: #FF7F7F; }
 .quality-a { color: #FEBF7F; }
 .quality-b { color: #FFDF80; }
 .quality-c { color: #FFFF7F; }
 .quality-d { color: #C0FF7F; }
 .quality-f { color: #7FFFFF; }
-.quality-x { color: #797981; }
