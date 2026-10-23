@@ -316,7 +316,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 41px;
+    margin-bottom: 20px;
 }
 
 #tower-name-group > p {
