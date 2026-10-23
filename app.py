@@ -92,7 +92,7 @@ def parse_packs(raw, tower_by_id):
 
 def build():
     with ThreadPoolExecutor(max_workers=4) as pool:
-        players, towers, games, countries = pool.map(get_data, ["comps!A:C", "towers!A:J", "games!A:C", "nationalities!A:B"])
+        players, towers, games, countries = pool.map(get_data, ["comps!A:C", "towers!A:Q", "games!A:C", "nationalities!A:B"])
 
     flags = {}
     for c in countries:

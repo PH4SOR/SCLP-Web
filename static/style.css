@@ -312,8 +312,24 @@ p {
     margin: 0 !important;
 }
 
-#tower-details > #tower-name {
-    margin: 8px 0 35px !important;
+#tower-name-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 41px;
+}
+
+#tower-name-group > p {
+    line-height: 1.2;
+}
+
+#tower-alternate-names,
+#tower-previous-names {
+    font-style: italic;
+}
+
+#tower-name-group > #tower-name {
+    margin: 8px 0 0 !important;
 }
 
 #tower-details > .big:not(#tower-name) {

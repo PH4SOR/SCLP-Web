@@ -327,6 +327,10 @@ function open_tower(id) {
     let tower_packs = packs.filter(pack => pack.towers.includes(id));
 
     $("#tower-name").html(`(${abbr(tower.name)}) ${tower.name}`);
+    let alternate_names = tower["alternate name(s)"]?.trim().replace(/,(?=\S)/g, ", ") ?? "";
+    $("#tower-alternate-names").text(alternate_names ? `also known as: ${alternate_names}` : "").toggle(Boolean(alternate_names));
+    let previous_names = tower["previous name(s)"]?.trim().replace(/,(?=\S)/g, ", ") ?? "";
+    $("#tower-previous-names").text(previous_names ? `previously known as: ${previous_names}` : "").toggle(Boolean(previous_names));
     $("#tower-diff").html(`<span class="${diff}">${sub_range(tower.difficulty)} ${diff}</span> (${format_num(tower.difficulty / 100)})`);
     $("#tower-location").html(places_html(tower, 0, 1));
     $("#tower-other-locations").html(tower.places.length > 1 ? `<i>Other Locations: ${places_html(tower, 1, tower.places.length)}</i>` : "").toggle(tower.places.length > 1);
