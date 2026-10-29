@@ -17,6 +17,12 @@ html, body {
     height: 100%;
 }
 
+html:has(body.legal-page) {
+    height: auto;
+    overflow-y: auto;
+}
+
+
 button, input, select, ::placeholder {
     font-family: inherit;
     color: inherit;
@@ -504,6 +510,60 @@ p {
 
 #home-page h2 a:hover {
     background: #363840;
+}
+
+.site-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    font-size: 13px;
+    color: #a0a8b0;
+}
+
+.site-footer a {
+    color: #a0a8b0;
+}
+
+.site-footer a:hover {
+    color: #FFFFFF;
+}
+
+body.legal-page {
+    height: auto;
+    min-height: 100%;
+   overflow-y: visible;
+   overscroll-behavior: auto;
+}
+
+.legal-content {
+    width: min(900px, calc(100% - 40px));
+    margin: 40px auto;
+    padding: 40px;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.legal-content h1 {
+    margin-top: 18px;
+}
+
+.legal-content h2 {
+    margin-top: 28px;
+    font-size: 22px;
+}
+
+.legal-content ul {
+    padding-left: 24px;
+}
+
+.legal-effective {
+    color: #a0a8b0;
+}
+
+.legal-back {
+    font-size: 14px;
 }
 
 .badge {

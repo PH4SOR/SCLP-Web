@@ -255,6 +255,16 @@ def home():
     js = {**data, "cool_members": cool_members, "staff": staff, "roles": roles, "scotw_points": scotw_points, "diffs": diffs}
     return render_template("index.html", js=js, diffs=diffs, player_sorts=player_sorts, meta=page_meta())
 
+@app.route("/privacy-policy")
+def privacy_policy():
+    meta = {"title": "Privacy Policy - SCLP", "description": "Privacy Policy for sclp.pro"}
+    return render_template("privacy_policy.html", meta=meta)
+
+@app.route("/terms-of-service")
+def terms_of_service():
+    meta = {"title": "Terms of Service - SCLP", "description": "Terms of Service for sclp.pro"}
+    return render_template("terms_of_service.html", meta=meta)
+
 def next_scotw(after):
     local = after.astimezone(ZoneInfo("America/New_York"))
     days_left = (6 - local.weekday()) % 7
